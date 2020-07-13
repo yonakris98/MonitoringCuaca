@@ -1,0 +1,73 @@
+h3{
+	color: rgb(0,0,128);
+}
+
+.italic {
+	font-style: italic;
+}
+
+#bold{
+	font-weight: bold;
+}
+
+#map {
+	height: 400px;  /* The height is 400 pixels */
+	width: 100%;  /* The width is the width of the web page */
+ }
+
+img {
+ 	width: 55px;
+ 	height: 70px;
+ }
+
+ p.p1{
+ 	padding-top: 10px;
+ }
+
+/*Column*/
+ * {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#table {
+  border: 0px solid black;
+}
+
+.daerah {
+  text-align: center;
+  font-weight: bold;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.my_text{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:40px;
+  font-weight:bold;
+}
+
+table.ex1 {
+  border: 1px solid red; 
+  padding: 35px;
+}
+
