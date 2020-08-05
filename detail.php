@@ -68,22 +68,26 @@
       <?php
           $get_id = $_GET['id'];
 
-          // $sql = "SELECT * FROM(wilayah LEFT JOIN suhu USING (id_wilayah) LEFT JOIN hujan USING (id_wilayah) LEFT JOIN  kecepatan_angin USING (id_wilayah)) WHERE id_wilayah=$get_id";
+          $removeSuhu = "DELETE FROM suhu WHERE waktu < NOW() - INTERVAL 2 DAY";
+          $removeHujan = "DELETE FROM hujan WHERE waktu < NOW() - INTERVAL 2 DAY";
+          $removeAngin = "DELETE FROM kecepatan_angin WHERE waktu < NOW() - INTERVAL 2 DAY";
 
           $sql = "SELECT nama,suhu,kelembaban_udara,curah_hujan,kecepatan_angin
           FROM wilayah,suhu,hujan,kecepatan_angin
           WHERE wilayah.id_wilayah=$get_id
-          AND suhu.id_suhu=(SELECT MAX(id_suhu) FROM suhu) 
-          AND hujan.id_hujan=(SELECT MAX(id_hujan) FROM hujan) 
-          AND kecepatan_angin.id_angin=(SELECT MAX(id_angin)FROM kecepatan_angin)
           AND suhu.id_wilayah=$get_id
           AND hujan.id_wilayah=$get_id
-          AND kecepatan_angin.id_wilayah=$get_id";
+          AND kecepatan_angin.id_wilayah=$get_id ORDER BY suhu.id_suhu DESC, hujan.id_hujan DESC, kecepatan_angin.id_angin DESC LIMIT 1";
+
+          $resultRemoveSuhu = mysqli_query($con,$removeSuhu) or die(mysqli_error($con)); 
+          $resultRemoveHujan = mysqli_query($con,$removeHujan) or die(mysqli_error($con)); 
+          $resultRemoveAngin = mysqli_query($con,$removeAngin) or die(mysqli_error($con)); 
 
           $result = mysqli_query($con,$sql) or die(mysqli_error($con)); 
+          
           $row = mysqli_fetch_assoc($result);
 
-          if($row['curah_hujan'] > 500){
+          if($row['curah_hujan'] > 800){
             echo '<p>'.$row['nama'].'</p>';
             echo "Cerah <br>"; 
             $sqlFoto = "SELECT *  FROM asset WHERE id = 1";
@@ -100,6 +104,17 @@
           }
           echo '<p>'.$row['suhu'].'‎°C</p>';
           echo '<p>'.$row['kecepatan_angin'].' m/s</p>';
+          if($row['kecepatan_angin'] <= 0.59){
+            echo "Angin Reda";
+          }else if($row['kecepatan_angin'] >= 0.60 && $row['kecepatan_angin'] <= 1.79 ){
+            echo "Angin Sepoi-sepoi";
+          }else if($row['kecepatan_angin'] >= 1.80 && $row['kecepatan_angin'] <= 3.39 ){
+            echo "Angin Lemah";
+          }else if($row['kecepatan_angin'] >= 3.40 && $row['kecepatan_angin'] <= 5.29 ){
+            echo "Angin Sedang";
+          }else if($row['kecepatan_angin'] >= 5.30 && $row['kecepatan_angin'] <= 7.49 ){
+            echo "Angin Agak Keras";
+          }
       ?>
       </td></tr>
       </table>
@@ -109,7 +124,7 @@
     <!-- RIGHT -->
     <td>
     <table>
-       <b>Daftar Daerah</b>
+       <b>Daftar Wilayah</b>
             <?php
               $sql = "SELECT * FROM wilayah";
               $result = mysqli_query($con,$sql) or die("gagal select"); 
@@ -125,13 +140,16 @@
   </table>
   <!-- INFO CUACA -->
   
-  <!-- Chart -->
+  <!-- Chart Button-->
   <div style="padding-left: 10px;">
     <?php
       $get_id = $_GET['id'];
-      echo("<button class=\"btn btn-primary\" onclick=\"location.href='chart.php?id='+$get_id\">Tampilkan Chart</button>");
+      echo("<button class=\"btn btn-danger\" onclick=\"location.href='chart_suhu.php?id='+$get_id\">Chart Suhu</button>");
+      echo("<span style=\"padding-left:15px;\"><button class=\"btn btn-success\" onclick=\"location.href='chart_kec_angin.php?id='+$get_id\">Chart Kecepatan Angin</button></span>");
+      echo("<span style=\"padding-left:15px;\"><button class=\"btn btn-primary\" onclick=\"location.href='chart_kelembaban.php?id='+$get_id\">Chart Kelembaban Udara</button></span>");
     ?>
   </div>
+
   <!-- Date -->
   <script>
     n =  new Date();

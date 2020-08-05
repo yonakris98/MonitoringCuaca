@@ -125,7 +125,7 @@
           $result = mysqli_query($con,$sql) or die("gagal select"); 
           while($row = mysqli_fetch_assoc($result)) {
             echo'<tr>';
-            echo '<td>'.$row['nama'].'</td>';
+            echo '<td><a href="detail.php?id='.$row['id_wilayah'].'">'.$row['nama'].'</a></td>';
             echo '<td>'.$row['cuaca'].'</td>';
             echo '<td>'.$row['waktu'].'</td>';
             echo '<td>'.'<a href="https://www.google.com/maps/place/'.$row['latitude'].",".$row['longitude'].'" target="_blank">Google Maps</a>'.'</td>';
@@ -137,7 +137,7 @@
     </table>
   </td>
   <!-- Table Right -->
-    <td>
+<!--     <td>
       <table>
             <b>Daftar Daerah</b>
             <?php
@@ -150,7 +150,7 @@
               }
             ?>
       </table>
-    </td>
+    </td> -->
   </tr>
 </table>
 

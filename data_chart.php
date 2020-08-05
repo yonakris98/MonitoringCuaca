@@ -2,16 +2,12 @@
   require 'connect.php';
   include 'detail.php';
 
-  //setting header to json
-  //header('Content-Type: application/json');
-
   //database
   $servername = "localhost";
   $username = "root";
   $password = "";
   $dbname = "dbcuaca";
   $requestID = $_GET['id'];
-  // //$requestID = (isset($_GET['get_id'])) ? $_GET['get_id'] : '';
 
   //get connection
   $mysqli = new mysqli($servername, $username, $password, $dbname);
@@ -33,9 +29,6 @@
   $query_waktu = "SELECT waktu FROM suhu WHERE id_wilayah= $requestID
   AND waktu >= CURDATE() 
   AND waktu < CURDATE() + INTERVAL 1 DAY";
-  
-  // $query = "SELECT suhu FROM suhu s WHERE s.id_wilayah = $requestID 
-  // AND s.waktu >= CURDATE() AND s.waktu <CURDATE() + INTERVAL 1 DAY";
 
   //execute query
   $result_suhu = mysqli_query($con,$query_suhu) 
